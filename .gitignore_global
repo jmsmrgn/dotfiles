@@ -1,0 +1,9 @@
+*.
+*~
+*.log
+*.sublime-*
+*.DS_Store
+*.Trashes
+dll/
+.awcache
+node_modules
