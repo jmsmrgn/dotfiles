@@ -81,6 +81,31 @@ z4h bindkey z4h-cd-forward Shift+Right  # cd into the next directory
 z4h bindkey z4h-cd-up      Shift+Up     # cd into the parent directory
 z4h bindkey z4h-cd-down    Shift+Down   # cd into a child directory
 
+# # Fix numeric keypad
+# 0 . Enter
+bindkey -s "^[Op" "0"
+bindkey -s "^[On" "."
+bindkey -s "^[OM" "^M"
+# 1 2 3
+bindkey -s "^[Oq" "1"
+bindkey -s "^[Or" "2"
+bindkey -s "^[Os" "3"
+# 4 5 6
+bindkey -s "^[Ot" "4"
+bindkey -s "^[Ou" "5"
+bindkey -s "^[Ov" "6"
+# 7 8 9
+bindkey -s "^[Ow" "7"
+bindkey -s "^[Ox" "8"
+bindkey -s "^[Oy" "9"
+# + -  * /
+bindkey -s "^[Ol" "+"
+bindkey -s "^[Om" "-"
+bindkey -s "^[Oj" "*"
+bindkey -s "^[Oo" "/"
+bindkey -s "^[Ok" "+"
+bindkey -s "^[OX" "="
+
 # Autoload functions.
 autoload -Uz zmv
 
@@ -88,15 +113,43 @@ autoload -Uz zmv
 function md() { [[ $# == 1 ]] && mkdir -p -- "$1" && cd -- "$1" }
 compdef _directories md
 
+# Add spacer to Dock.
+function add-spacer() {
+  defaults write com.apple.dock persistent-apps -array-add '{"tile-type"="spacer-tile";}'
+  killall Dock
+}
+
 # Define named directories: ~w <=> Windows home directory on WSL.
 [[ -z $z4h_win_home ]] || hash -d w=$z4h_win_home
 
+# Starting directory.
+cd ~/git
+
 # Define aliases.
-alias tree='tree -a -I .git'
+alias reload="exec zsh"
+alias tree="tree -a -I .git"
+alias listeners="sudo lsof -i -P | grep LISTEN" # show active network listeners
+alias npm-global="npm list -g --depth=0"        # list globally installed npm packages
+alias npm-local="npm list --depth=0"            # list locally installed npm packages
+alias et="rm -rf ~/.Trash/*"                    # force empty trash
 
 # Add flags to existing aliases.
 alias ls="${aliases[ls]:-ls} -A"
 
 # Set shell options: http://zsh.sourceforge.net/Doc/Release/Options.html.
-setopt glob_dots     # no special treatment for file names with a leading dot
-setopt no_auto_menu  # require an extra TAB press to open the completion menu
+setopt glob_dots         # no special treatment for file names with a leading dot
+setopt no_auto_menu      # require an extra TAB press to open the completion menu
+setopt AUTO_CD           # why type 'cd dir' if you could just type 'dir'?
+setopt MULTIOS           # pipe to multiple outputs!
+setopt AUTO_PUSHD        # makes cd=pushd
+setopt AUTO_NAME_DIRS    # use named dirs when possible
+setopt GLOB_COMPLETE     # if we have a glob this will expand it
+setopt NO_CASE_GLOB      # case insensitive globbing
+setopt NUMERIC_GLOB_SORT # if numeric filenames are matched, sort numerically
+setopt PUSHD_TO_HOME     # blank pushd goes to home
+setopt PUSHD_IGNORE_DUPS # ignore multiple directories for the stack
+setopt RM_STAR_WAIT      # 10 second wait if you do something that will delete everything
+setopt IGNORE_EOF        # Do not exit on end-of-file
+setopt NO_CLOBBER        # keep echo "station" > station from clobbering station
+setopt EXTENDED_GLOB     # treat #~^ characters as part of patterns for filenames
+setopt RC_EXPAND_PARAM   # foo${xx}bar has foobar surrounding all the variables
