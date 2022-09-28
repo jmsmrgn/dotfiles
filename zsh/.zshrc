@@ -60,6 +60,8 @@ path=(~/bin $path)
 
 # Export environment variables.
 export GPG_TTY=$TTY
+export N_PREFIX=$HOME/.n
+export PATH=$N_PREFIX/bin:$PATH
 
 # Source additional local files if they exist.
 z4h source ~/.env.zsh
