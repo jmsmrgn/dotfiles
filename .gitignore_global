@@ -1,9 +1,27 @@
-*.
+# macOS
+.DS_Store
+.DS_Store?
+.Trashes
+.Spotlight-V100
+.fseventsd
+*.AppleDouble
+*.LSOverride
+
+# Editors
+.vscode/
 *~
+
+# Logs & temp
 *.log
-*.sublime-*
-*.DS_Store
-*.Trashes
-dll/
-.awcache
-node_modules
+*.tmp
+*.temp
+
+# Vercel
+.vercel/
+
+# Claude
+.claude/
+.claudeignore
+
+# Misc
+*.
