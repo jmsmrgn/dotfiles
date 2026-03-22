@@ -44,10 +44,6 @@ alias et="rm -rf ~/.Trash/*"
 alias ports="sudo lsof -i -P | grep LISTEN"
 alias killport="kill -9 \$(lsof -ti:"
 
-# Git
-alias gs="git status"
-alias glog="git log --oneline --graph --decorate -20"
-
 # Mise
 alias mi="mise install"
 alias mu="mise use"
